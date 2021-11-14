@@ -75,12 +75,19 @@ uint64_t* GenerateBits(uint64_t seed[4], uint64_t length){
     while(counter != length){
         bool output = ProduceBit(&reg[0]) ^ ProduceBit(&reg[1]);
         
-        if(ProduceBit(&reg[2]) ^ ProduceBit(&reg[3])){
+        if(ProduceBit(&reg[3]) == true){
+            output^=ProduceBit(&reg[2]);
             buffer[counter/64]>>=1;
             if(output)
                 buffer[counter/64]|=UINT64_MAX/2+1;
-            counter++;
+            
+        }else{
+            buffer[counter/64]>>=1;
+            if(output)
+                buffer[counter/64]|=UINT64_MAX/2+1;
         }
+        
+        counter++;
     }
 
     return buffer;
